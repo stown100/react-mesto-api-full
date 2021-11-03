@@ -51,7 +51,7 @@ const deleteCard = (req, res, next) => {
           });
       } else {
         const err = new Error('Карточку создали не вы!');
-        err.statusCode = 403;
+        err.statusCode = 400;
         return next(err);
       }
     })
@@ -91,7 +91,7 @@ const likeCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         const err = new Error('Невалидный id');
-        err.statusCode = 403;
+        err.statusCode = 400;
         next(err);
       }
       if (err.message === 'NotFound') {

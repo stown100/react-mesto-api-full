@@ -81,7 +81,7 @@ class Api {
 }
 
 const api = new Api({                   //9
-    url: 'https://mesto.nomoreparties.co/v1/cohort-26',
+    url: 'https://application-mesto.nomoredomains.icu',
     headers: {
       authorization: '4187936b-f13d-40c6-aac3-45e4140019db',
       'Content-Type': 'application/json'
