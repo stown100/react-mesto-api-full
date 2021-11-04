@@ -167,7 +167,7 @@ function App() {
 
   const onRegister = ({ password, email }) => {
     return Auth.register(password, email).then((res) => {
-      if (!res || res.statusCode === 400) throw new Error('Что-то пошло не так')
+      if (!res || res.statusCode === 409) throw new Error('Что-то пошло не так')
       else {
         setRegisterPopupOpen(true);
       }
