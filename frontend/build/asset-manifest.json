@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fc6dc0d7.chunk.css",
+    "main.js": "/static/js/main.5d53c1fb.chunk.js",
+    "main.js.map": "/static/js/main.5d53c1fb.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.3e6eca41.js",
+    "runtime-main.js.map": "/static/js/runtime-main.3e6eca41.js.map",
+    "static/js/2.976f55da.chunk.js": "/static/js/2.976f55da.chunk.js",
+    "static/js/2.976f55da.chunk.js.map": "/static/js/2.976f55da.chunk.js.map",
+    "static/js/3.a70c9c9b.chunk.js": "/static/js/3.a70c9c9b.chunk.js",
+    "static/js/3.a70c9c9b.chunk.js.map": "/static/js/3.a70c9c9b.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.fc6dc0d7.chunk.css.map": "/static/css/main.fc6dc0d7.chunk.css.map",
+    "static/js/2.976f55da.chunk.js.LICENSE.txt": "/static/js/2.976f55da.chunk.js.LICENSE.txt",
+    "static/media/CloseIcon.dac22d3e.svg": "/static/media/CloseIcon.dac22d3e.svg",
+    "static/media/EditButton.af236f6c.svg": "/static/media/EditButton.af236f6c.svg",
+    "static/media/ErrPopup.d4ce2a26.svg": "/static/media/ErrPopup.d4ce2a26.svg",
+    "static/media/Group.1ad06e85.svg": "/static/media/Group.1ad06e85.svg",
+    "static/media/index.css": "/static/media/like.dd6a61e8.svg",
+    "static/media/Vector.bed8c136.svg": "/static/media/Vector.bed8c136.svg",
+    "static/media/check.a9eb6caf.svg": "/static/media/check.a9eb6caf.svg",
+    "static/media/delete.2af49b82.svg": "/static/media/delete.2af49b82.svg",
+    "static/media/logo.bbe2a6ea.svg": "/static/media/logo.bbe2a6ea.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3e6eca41.js",
+    "static/js/2.976f55da.chunk.js",
+    "static/css/main.fc6dc0d7.chunk.css",
+    "static/js/main.5d53c1fb.chunk.js"
+  ]
+}

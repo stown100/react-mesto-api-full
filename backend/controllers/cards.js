@@ -51,7 +51,7 @@ const deleteCard = (req, res, next) => {
           });
       } else {
         const err = new Error('Карточку создали не вы!');
-        err.statusCode = 400;
+        err.statusCode = 403;
         return next(err);
       }
     })
@@ -76,7 +76,7 @@ const deleteCard = (req, res, next) => {
 const likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
-    { $addToSet: { likes: req.user._id } }, // добавляю _id в массив, если его там нет
+    { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true },
   )
     .then((card) => {

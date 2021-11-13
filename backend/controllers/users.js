@@ -2,6 +2,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
+// class ConflictError extends Error {
+//   constructor(message) {
+//     super(message);
+//     this.statusCode = 409;
+//   }
+// }
+
 const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
@@ -25,9 +32,13 @@ const createUser = (req, res, next) => {
           }
           if (err.message === 'Validation failed') {
             const err = new Error('Переданы некорректные данные при создании пользователя');
-            err.statusCode = 400;
+            err.statusCode = 409;
             return next(err);
           }
+          // if (err.name === 'MongoServerError') {
+          //   throw new ConflictError('Пользователь с данным email уже существует');
+          //   return next(err)
+          // }
           if (err.name === 'MongoServerError') {
             const err = new Error('При регистрации указан email, который уже существует на сервере');
             err.statusCode = 409;

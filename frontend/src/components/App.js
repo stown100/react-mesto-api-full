@@ -48,23 +48,25 @@ function App() {
   //Приём данных с сервера
   React.useEffect(() => {
     // let myId = null;
-    Promise.all([api.getUserInfo(),
-    api.getInitialCards()])
-      .then(([data, cardInfo]) => {
-        //   myId = userInfoClass._id;
-        setCurrentUser(data);
-        setCardsInfo(cardInfo);
-      })
-      .catch(() => {
-        console.error('Что-то сломалось!')
-      })
-  }, [])
+    const token = localStorage.getItem('jwt');
+      Promise.all([api.getUserInfo(token),
+        api.getInitialCards(token)])
+          .then(([data, cardInfo]) => {
+            //   myId = userInfoClass._id;
+            setCurrentUser(data[0]);
+            setCardsInfo(cardInfo);
+          })
+          .catch(() => {
+            console.error('Что-то сломалось!')
+          })
+  }, [loggedIn])
 
   function handleCardLike(likes, cardId) {
+    const token = localStorage.getItem('jwt');
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = likes.some(i => i._id === currentUser._id);
+    const isLiked = likes.some(i => i === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.likeCard(cardId, isLiked)
+    api.likeCard(cardId, isLiked, token)
         .then((newCard) => {
             setCardsInfo((state) => state.map((c) => c._id === cardId ? newCard : c));
         })
@@ -73,7 +75,8 @@ function App() {
 
 //Удаление карточки
   function handleCardDelete(cardId) {
-      api.deleteTask(cardId)
+    const token = localStorage.getItem('jwt');
+      api.deleteTask(cardId, token)
           .then(() => {
               setCardsInfo((state) => state.filter((card) => card._id !== cardId))
           })
@@ -82,7 +85,8 @@ function App() {
 
     //Добавление карточки
     function handleAddPlaceSubmit({name, link}) {
-      api.addTask({name, link})
+      const token = localStorage.getItem('jwt');
+      api.addTask({name, link}, token)
       .then((newCard) => {
         setCardsInfo([newCard, ...cardsInfo]); 
         setNewCardPopupOpen(false)
@@ -105,7 +109,8 @@ function App() {
 
   //Первый попап отправка данных на сервер
   const handleUpdateUser = ({name, about}) => {
-    api.setUserInfo({name, about})
+    const token = localStorage.getItem('jwt');
+    api.setUserInfo({name, about}, token)
     .then((data) => {
       setProfilePopupOpen(false);
       setCurrentUser(data);
@@ -114,7 +119,8 @@ function App() {
   }
 
   const handelUpdateAvatar = (avatar) => {
-    api.setUserAvatar(avatar)
+    const token = localStorage.getItem('jwt');
+    api.setUserAvatar(avatar, token)
     .then((data) => {
       setAvatarPopupOpen(false)
       setCurrentUser(data);
@@ -167,7 +173,7 @@ function App() {
 
   const onRegister = ({ password, email }) => {
     return Auth.register(password, email).then((res) => {
-      if (!res || res.statusCode === 409) throw new Error('Что-то пошло не так')
+      if (!res || res.statusCode === 400) throw new Error('Что-то пошло не так')
       else {
         setRegisterPopupOpen(true);
       }
@@ -193,7 +199,7 @@ function App() {
   
                             //Сделать меню бургер
   return (
-      <CurrentUserContext.Provider value={{currentUser}}>
+      <CurrentUserContext.Provider value={currentUser}>
         <div className="App">
           <div className="page">
           <Switch>

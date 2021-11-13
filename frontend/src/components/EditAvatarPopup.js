@@ -4,7 +4,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 
 const EditAvatarPopup = ({avatarPopupOpen, onUpdateAvatar, closeAllPopups}) => {
-    const { currentUser } = React.useContext(CurrentUserContext);
+    const currentUser = React.useContext(CurrentUserContext);
     const inputRef = React.useRef();
 
         // После загрузки текущего пользователя из API

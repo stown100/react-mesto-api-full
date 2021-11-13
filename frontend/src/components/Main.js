@@ -15,7 +15,7 @@ function Main({ setAvatarPopupOpen,
     onCardDelete,
     onDeletePopup,
 }) {
-    const { currentUser } = React.useContext(CurrentUserContext);
+    const currentUser = React.useContext(CurrentUserContext);
 
     return (
         <main className="main">

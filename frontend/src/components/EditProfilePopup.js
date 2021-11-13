@@ -4,7 +4,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
                                                         //Проблема с первым инпутом, остаётся только name и ничего не вводиться
                                                         //Второй инпут не меняется
 const EditProfilePopup = ({profilePopupOpen, setProfilePopupOpen, onUpdateUser, closeAllPopups }) => {
-    const { currentUser } = React.useContext(CurrentUserContext);
+    const currentUser = React.useContext(CurrentUserContext);
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
     // После загрузки текущего пользователя из API
