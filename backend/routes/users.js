@@ -1,4 +1,4 @@
-const { celebrate, Joi } = require('celebrate');
+const { errors, celebrate, Joi } = require('celebrate');
 const validator = require('validator');
 const router = require('express').Router();
 const {
@@ -10,8 +10,7 @@ router.get('/me', getUserMe);
 
 router.get('/:userId', celebrate({
   params: Joi.object().keys({
-    userId: Joi.string().min(24).max(24).hex()
-      .required(),
+    userId: Joi.string().length(24).hex(),
   }),
 }), getUserById);
 
@@ -32,5 +31,7 @@ router.patch('/me/avatar', celebrate({
     }),
   }),
 }), updateAvatar);
+
+router.use(errors());
 
 module.exports = router;

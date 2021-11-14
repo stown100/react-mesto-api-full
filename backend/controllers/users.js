@@ -6,13 +6,6 @@ const CastError = require('../errors/CastError');
 const NotFound = require('../errors/NotFound');
 const ConflictError = require('../errors/ConflictError');
 
-// class ConflictError extends Error {
-//   constructor(message) {
-//     super(message);
-//     this.statusCode = 409;
-//   }
-// }
-
 const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
@@ -46,26 +39,34 @@ const createUser = (req, res, next) => {
 
 const getUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.send(users))
+    .then((users) => {
+      if (!users) {
+        throw new CastError('Переданны некорректные данные');
+      }
+      res.send(users);
+    })
     .catch(next);
 };
 
 const getUserById = (req, res, next) => {
   const id = req.params.userId;
   return User.findById({ _id: id })
+    .orFail(() => {
+      throw new NotFound('Пользователя с таким id не существует');
+    })
     .then((user) => {
       if (user) {
         res.send(user);
       } else {
-        next(new NotFound('Пользователя с таким id не существует'));
+        throw new NotFound('Пользователя с таким id не существует');
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new CastError('Переданны некорректные данные'));
+        throw new CastError('Переданны некорректные данные');
       }
       if (err.name === 'NotFound') {
-        next(new NotFound('Пользователя с таким id не существует'));
+        throw new NotFound('Пользователя с таким id не существует');
       }
       const error = new Error('На сервере произошла ошибка');
       error.statusCode = 500;
@@ -79,6 +80,9 @@ const updateUser = (req, res, next) => {
   const { name, about } = req.body;
 
   User.findByIdAndUpdate(userId, { name, about }, { new: true, runValidators: true })
+    .orFail(() => {
+      throw new NotFound('Пользователя с таким id не существует');
+    })
     .then((user) => {
       if (user) {
         res.send(user);
@@ -102,6 +106,9 @@ const updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
 
   User.findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
+    .orFail(() => {
+      throw new NotFound('Пользователя с таким id не существует');
+    })
     .then((user) => {
       if (user) {
         res.send(user);
@@ -155,6 +162,9 @@ const login = (req, res, next) => {
 const getUserMe = (req, res, next) => {
   const id = req.user._id;
   User.find({ _id: id })
+    .orFail(() => {
+      throw new NotFound('Пользователя с таким id не существует');
+    })
     .then((user) => {
       if (user) {
         res.send(user);

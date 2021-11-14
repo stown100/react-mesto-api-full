@@ -33,7 +33,8 @@ function App() {
   const [cardsInfo, setCardsInfo] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState({name: '', about: '', avatar: ''});
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [userData, setUserData] = React.useState({});
+  // const [userData, setUserData] = React.useState({});
+  const [userEmail, setUserEmail] = React.useState('')
   const history = useHistory();
 
   const closeAllPopups = () => {
@@ -49,6 +50,7 @@ function App() {
   React.useEffect(() => {
     // let myId = null;
     const token = localStorage.getItem('jwt');
+    if(token) {
       Promise.all([api.getUserInfo(token),
         api.getInitialCards(token)])
           .then(([data, cardInfo]) => {
@@ -59,6 +61,7 @@ function App() {
           .catch(() => {
             console.error('Что-то сломалось!')
           })
+    }
   }, [loggedIn])
 
   function handleCardLike(likes, cardId) {
@@ -143,12 +146,11 @@ function App() {
   const auth = async (jwt) => {
     return Auth.getContent(jwt)
       .then((res) => {
+        let result = res.map(a => a.email); //нужно вывести email на страницу
         // Проверка токена, если токен ваидный записываем данные в state, иначе удаляем токен из localStorage; 
-        if (res.data) {
+        if (res) {
           setLoggedIn(true);
-          setUserData({
-            email: res.data.email
-          });
+          setUserEmail(result.join(''));
         }
       })
       .catch(() => console.log('400 — Токен не передан или передан не в том формате' || '401 — Переданный токен некорректен'))
@@ -168,7 +170,7 @@ function App() {
 
   React.useEffect(() => {
 
-  }, [userData])
+  }, [userEmail])
 
 
   const onRegister = ({ password, email }) => {
@@ -204,9 +206,9 @@ function App() {
           <div className="page">
           <Switch>
             <ProtectedRoute exact loggedIn={loggedIn} path="/">
-              <Header loggedIn={loggedIn} setUserData={setUserData} onSignOut={onSignOut}>
-                <NavBar email={(res) => setUserData({email: res.email})} onSignOut={onSignOut}>
-                  <NavBarMenu burgerMenu={burgerMenu} setBurgerMenu={setBurgerMenu} userData={userData} onSignOut={onSignOut} isOpen={burgerMenu} />
+              <Header loggedIn={loggedIn} setUserData={setUserEmail} onSignOut={onSignOut}>
+                <NavBar email={(res) => setUserEmail({email: res.email})} onSignOut={onSignOut}>
+                  <NavBarMenu burgerMenu={burgerMenu} setBurgerMenu={setBurgerMenu} userEmail={userEmail} onSignOut={onSignOut} isOpen={burgerMenu} />
                 </NavBar>
               </Header>
               <Main setAvatarPopupOpen={setAvatarPopupOpen} 

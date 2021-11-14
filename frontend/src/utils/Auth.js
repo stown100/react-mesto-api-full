@@ -1,6 +1,6 @@
 export const BASE_URL = 'https://api.application-mesto.nomoredomains.xyz';
 // export const BASE_URL = 'http://localhost:3000';
-// 'https://auth.nomoreparties.co'; 'http://localhost:3000'; 'https://api.application-mesto.nomoredomains.xyz';
+// export const BASE_URL = 'https://auth.nomoreparties.co';
 
 export const register = (password, email) => {
   return fetch(`${BASE_URL}/signup`, {

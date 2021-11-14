@@ -10,6 +10,7 @@ const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const NotFound = require('./errors/NotFound');
 
 const PORT = 3000;
 const app = express();
@@ -58,14 +59,14 @@ app.get('/crash-test', () => {
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().email({ tlds: { allow: false } }).required(),
+    email: Joi.string().email({ tlds: { allow: false } }),
     password: Joi.string().required(),
   }),
 }), login);
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().email({ tlds: { allow: false } }).required(),
+    email: Joi.string().email({ tlds: { allow: false } }),
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
@@ -83,16 +84,11 @@ app.use(auth);
 app.use('/users', routesUsers);
 app.use('/cards', routesCards);
 
-app.all('*', (req, res, next) => {
-  const err = new Error('Ресурс не найден');
-  err.statusCode = 404;
-  return next(err);
-});
+app.all('*', (req, res, next) => next(new NotFound('Ресурс не найден')));
 
 app.use(errorLogger); // подключаем логгер ошибок
 
 app.use(errorHandler);
-// 'Ссылка на сервер: http://api.application-mesto.nomoredomains.xyz'
 app.listen(PORT, () => {
   console.log('Ссылка на сервер: http://api.application-mesto.nomoredomains.xyz');
 });

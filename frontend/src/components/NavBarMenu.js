@@ -1,7 +1,7 @@
 import React from 'react';
 import NavBar from './NavBar';
 
-const NavBarMenu = ({ isOpen, setBurgerMenu, userData, onSignOut }) => {
+const NavBarMenu = ({ isOpen, setBurgerMenu, userEmail, onSignOut }) => {
     return (
         // <NavBar isOpen={burgerMenu}>
             <div className="navbar__menu">
@@ -9,7 +9,7 @@ const NavBarMenu = ({ isOpen, setBurgerMenu, userData, onSignOut }) => {
                     <span></span>
                 </button>
                 <ul className={`navbar__nav  ${isOpen && "navbar__nav_open"}`}>
-                    <li className="navbar__link">{userData.email}</li>
+                    <li className="navbar__link">{userEmail}</li>
                     <li><button onClick={onSignOut} className="navbar__link navbar__button">Выйти</button></li>
                 </ul>
             </div>
